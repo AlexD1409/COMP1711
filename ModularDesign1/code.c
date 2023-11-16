@@ -1,4 +1,5 @@
 #include "utilities.h"
+#include "string.h"
 
 int main()
 {
@@ -140,8 +141,39 @@ int main()
 
         case 'E':
         case 'e':
-            return 0;
-            break;
+            
+            counter = 0;
+            char date [3];
+            int i;
+            char temp [3];
+                                                                        
+            while (fgets(line, buffer_size, input))
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+
+            printf("Input date: SEP/NOV/DEC\n");
+            scanf("%s", date);
+
+            printf("%s\n", strstr(daily_readings[0].date, date));
+            
+           for(i = 0; i < counter; i++);
+           {
+
+            char *month = strstr(daily_readings[i].date, date);
+                        
+            if(month != NULL)
+            {
+                printf("%s\n", daily_readings[i].date);
+            }
+
+           }
+
+           fclose(input);
+           break;
 
         case 'F':
         case 'f':
