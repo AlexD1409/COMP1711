@@ -88,9 +88,7 @@ int main()
         case 'c':
 
             counter = 0;
-            float min = daily_readings[0].bloodIron;
-            printf("The minimum value is %f", min);
-            
+                                                
             while (fgets(line, buffer_size, input))
             {
                 // split up the line and store it in the right place
@@ -98,20 +96,46 @@ int main()
                 tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
                 counter++;
             }
+
+            float min = daily_readings[0].bloodIron;
+        
             for (int i = 0; i < counter; i++)
             {
-                if (daily_readings[counter].bloodIron < min)
+                if (daily_readings[i].bloodIron < min)
                 {
-                    min = daily_readings[counter].bloodIron;
-                }
+                    min = daily_readings[i].bloodIron; 
+                } 
             }
-            printf("The minimum value is %f", min);
+
+            printf("The minimum value is %f\n", min);
             fclose(input);
             break;
 
         case 'D':
         case 'd':
-            return 0;
+            
+            counter = 0;
+                                                
+            while (fgets(line, buffer_size, input))
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+
+            float max = daily_readings[0].bloodIron;
+        
+            for (int i = 0; i < counter; i++)
+            {
+                if (daily_readings[i].bloodIron > max)
+                {
+                    max = daily_readings[i].bloodIron; 
+                } 
+            }
+
+            printf("The maximum value is %f\n", max);
+            fclose(input);
             break;
 
         case 'E':
