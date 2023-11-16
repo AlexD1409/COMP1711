@@ -86,7 +86,27 @@ int main()
 
         case 'C':
         case 'c':
-            return 0;
+
+            counter = 0;
+            float min = daily_readings[0].bloodIron;
+            printf("The minimum value is %f", min);
+            
+            while (fgets(line, buffer_size, input))
+            {
+                // split up the line and store it in the right place
+                // using the & operator to pass in a pointer to the bloodIron so it stores it
+                tokeniseRecord(line, ",", daily_readings[counter].date, &daily_readings[counter].bloodIron);
+                counter++;
+            }
+            for (int i = 0; i < counter; i++)
+            {
+                if (daily_readings[counter].bloodIron < min)
+                {
+                    min = daily_readings[counter].bloodIron;
+                }
+            }
+            printf("The minimum value is %f", min);
+            fclose(input);
             break;
 
         case 'D':
