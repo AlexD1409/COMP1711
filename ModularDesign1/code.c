@@ -159,16 +159,19 @@ int main()
             scanf("%s", date);
 
             printf("%s\n", strstr(daily_readings[0].date, date));
+            printf("%s\n", strtok(strstr(daily_readings[0].date, date), "-"));
+            printf("%s\n", date);
             
            for(i = 0; i < counter; i++);
            {
+                char *token = strtok(strstr(daily_readings[i].date, date), "-");
+                strcpy(temp, token);
+                printf("%s", temp);
 
-            char *month = strstr(daily_readings[i].date, date);
-                        
-            if(month != NULL)
-            {
-                printf("%s\n", daily_readings[i].date);
-            }
+                if (temp == date)  
+                {
+                    printf("%s\n", daily_readings[i].date);
+                }              
 
            }
 
