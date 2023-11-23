@@ -3,6 +3,13 @@
 #include <string.h>
 #include "FitnessDataStruct.h"
 
+//Defining variabales
+int buffer = 100;
+FITNESS_DATA Data[1000];
+char line_buffer[100];
+char filename[100];
+
+//Helper function
 void tokeniseRecord(const char *input, const char *delimiter,
                     char *date, char *time, char *steps) {
     // Create a copy of the input string as strtok modifies the string
@@ -30,34 +37,66 @@ void tokeniseRecord(const char *input, const char *delimiter,
 }
 
 int main() {
-    
-    int record0;
-    int record1;
-    int record2;
-    int i = 0; 
-    int buffer = 50;
 
-    char line_buffer[buffer];
+    printf("Menu options:\n");
+    printf("A: Specify the filename to be imported\n");
+    printf("B: Display the total number of records in the file\n");
+    printf("C: Find the date and time of the timeslot with the fewest steps\n");
+    printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+    printf("E: Find the mean step count of all the records in the file\n");
+    printf("F: Find the longest continuous period where the step count is above 500 steps\n");
+    printf("Q: Quit\n");
+    printf("Enter choice: \n");
 
-    FITNESS_DATA data[10000];
+    char choice;
+    choice = getchar();
+    while (getchar() != '\n');
     
-    FILE *file = fopen("FitnessData_2023.csv", "r");
-    
-    while (fgets(line_buffer, buffer, file) !=NULL){
+    while (1)
 
-        tokeniseRecord(line_buffer, ",", data[i].date, data[i].time, data[i].steps);
-        i++;
+        switch (choice){
+            case 'A':
+            case 'a':
+
+                printf("Input filename: ");
+                scanf("%s", filename);
+                FILE *input = fopen(filename, "r");
+                if (!input){
+                    printf("Error: Could not find or open the file.\n");
+                    return 1;
+                }
+
+                return 1;
+
+            case 'B':
+            case 'b':
+
+            case 'C':
+            case 'c':
+
+            case 'D':
+            case 'd':
+
+            case 'E':
+            case 'e':
+
+            case 'F':
+            case 'f':
+
+            case 'Q':
+            case 'q':
+                return 0;
+                break;
+
+            default: 
+                printf("Invalid choice entered, try again\n");
+                choice = getchar();
+                while (getchar() != '\n');
+                break;
+
+        }
         
-    }
-
-    record0 = atoi(data[0].steps);
-    record1 = atoi(data[1].steps);
-    record2 = atoi(data[2].steps);
-    printf("Number of records in file: %d\n", i);
-    printf("%s/%s/%d\n", data[0].date,data[0].time,record0);
-    printf("%s/%s/%d\n", data[1].date,data[1].time,record1);
-    printf("%s/%s/%d\n", data[2].date,data[2].time,record2);
-
+        
     return 0;
 
 }
