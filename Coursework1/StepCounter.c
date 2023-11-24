@@ -51,7 +51,7 @@ int main() {
       
     while (1) {
 
-        printf("Enter choice: \n");
+        printf("Enter choice: ");
         choice = getchar();
         while (getchar() != '\n');
         
@@ -68,11 +68,6 @@ int main() {
                     return 1;
                 }
 
-                while (getchar() != '\n');
-                break;
-
-            case 'B':
-            case 'b':
                 counter = 0;
 
                 while (fgets(line_buffer, buffer, input))
@@ -81,12 +76,31 @@ int main() {
                     counter++;
                 }
 
+                while (getchar() != '\n');
+                break;
+
+            case 'B':
+            case 'b':
+
                 printf("Total records: %d\n", counter);
                 while (getchar() != '\n');
                 break;
 
             case 'C':
             case 'c':
+                ;
+                int min = *data[0].steps;
+                int minrecord;
+                
+                for (int i = 0; i < counter; i++) {
+                    if (*data[i].steps < min){
+                        minrecord = i;
+                    }
+                }
+
+                printf("Fewest steps: %s %s\n", data[minrecord].date, data[minrecord].time);
+                while (getchar() != '\n');
+                break;
 
             case 'D':
             case 'd':
