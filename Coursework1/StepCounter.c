@@ -5,9 +5,11 @@
 
 //Defining variabales
 int buffer = 100;
-FITNESS_DATA Data[1000];
+FITNESS_DATA data[1000];
 char line_buffer[100];
 char filename[100];
+int counter;
+char choice;
 
 //Helper function
 void tokeniseRecord(const char *input, const char *delimiter,
@@ -46,15 +48,15 @@ int main() {
     printf("E: Find the mean step count of all the records in the file\n");
     printf("F: Find the longest continuous period where the step count is above 500 steps\n");
     printf("Q: Quit\n");
-    printf("Enter choice: \n");
+      
+    while (1) {
 
-    char choice;
-    choice = getchar();
-    while (getchar() != '\n');
-    
-    while (1)
-
+        printf("Enter choice: \n");
+        choice = getchar();
+        while (getchar() != '\n');
+        
         switch (choice){
+            
             case 'A':
             case 'a':
 
@@ -66,10 +68,22 @@ int main() {
                     return 1;
                 }
 
-                return 1;
+                while (getchar() != '\n');
+                break;
 
             case 'B':
             case 'b':
+                counter = 0;
+
+                while (fgets(line_buffer, buffer, input))
+                {
+                    tokeniseRecord(line_buffer, ",", data[counter].date, data[counter].time, data[counter].steps);
+                    counter++;
+                }
+
+                printf("Total records: %d\n", counter);
+                while (getchar() != '\n');
+                break;
 
             case 'C':
             case 'c':
@@ -90,12 +104,11 @@ int main() {
 
             default: 
                 printf("Invalid choice entered, try again\n");
-                choice = getchar();
-                while (getchar() != '\n');
                 break;
 
         }
-        
+
+    }        
         
     return 0;
 
