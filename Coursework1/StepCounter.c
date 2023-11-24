@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "FitnessDataStruct.h"
 
 //Defining variabales
@@ -92,7 +93,8 @@ int main() {
                 int minrecord;
                 
                 for (int i = 0; i < counter; i++) {
-                    if (*data[i].steps < min){
+                    if (atoi(data[i].steps) < min){
+                        min = atoi(data[i].steps);
                         minrecord = i;
                     }
                 }
@@ -102,9 +104,35 @@ int main() {
 
             case 'D':
             case 'd':
+                ;
+                int max = *data[0].steps;
+                int maxrecord;
+                
+                for (int i = 0; i < counter; i++) {
+                    if (atoi(data[i].steps) > max){
+                        max = atoi(data[i].steps);
+                        maxrecord = i;
+                    }
+                }
+
+                printf("Largest steps: %s %s\n", data[maxrecord].date, data[maxrecord].time);                
+                break;
 
             case 'E':
             case 'e':
+                ;
+                int roundedmean;
+                float mean;
+                int total = 0;
+
+                for (int i = 0; i < counter; i++) {
+                    total += atoi(data[i].steps);                     
+                }
+
+                mean = total/counter;
+                roundedmean = round(mean);
+                printf("Mean step count: %d\n", roundedmean);             
+                break;
 
             case 'F':
             case 'f':
