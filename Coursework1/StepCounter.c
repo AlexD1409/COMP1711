@@ -78,12 +78,26 @@ int main() {
                 }
 
                 while (getchar() != '\n');
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");
                 break;
 
             case 'B':
             case 'b':
 
-                printf("Total records: %d\n", counter);                
+                printf("Total records: %d\n", counter);  
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");              
                 break;
 
             case 'C':
@@ -99,7 +113,14 @@ int main() {
                     }
                 }
 
-                printf("Fewest steps: %s %s\n", data[minrecord].date, data[minrecord].time);                
+                printf("Fewest steps: %s %s\n", data[minrecord].date, data[minrecord].time); 
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");               
                 break;
 
             case 'D':
@@ -115,7 +136,14 @@ int main() {
                     }
                 }
 
-                printf("Largest steps: %s %s\n", data[maxrecord].date, data[maxrecord].time);                
+                printf("Largest steps: %s %s\n", data[maxrecord].date, data[maxrecord].time);    
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");            
                 break;
 
             case 'E':
@@ -131,12 +159,49 @@ int main() {
 
                 mean = total/counter;
                 roundedmean = round(mean);
-                printf("Mean step count: %d\n", roundedmean);             
+                printf("Mean step count: %d\n", roundedmean);  
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");           
                 break;
 
             case 'F':
             case 'f':
+                ;
+                int start = 0;
+                int end = 0;    
+                int longest = 0;
+                int gap = 0;
 
+                for (int i = 0; i < counter; i++) {
+                    if (atoi(data[i].steps) > 500) {
+                        gap++;
+
+                    }   else {                                                    
+                            if (gap > longest) {
+                                longest = gap - 1;
+                                end = i - 1;
+                            }
+                            gap = 0;
+                        }
+
+                }                
+
+                start = end - longest;
+                printf("Longest period start: %s %s\nLongest period end: %s %s\n", data[start].date, data[start].time, data[end].date, data[end].time);
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");
+                break;                                
+        
             case 'Q':
             case 'q':
                 return 0;
@@ -144,6 +209,13 @@ int main() {
 
             default: 
                 printf("Invalid choice entered, try again\n");
+                printf("Menu options:\n");
+                printf("A: Specify the filename to be imported\n");
+                printf("B: Display the total number of records in the file\n");
+                printf("C: Find the date and time of the timeslot with the fewest steps\n");
+                printf("D: Find the date and time of the timeslot with the largest number of steps\n");
+                printf("E: Find the mean step count of all the records in the file\n");
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n");
                 break;
 
         }
