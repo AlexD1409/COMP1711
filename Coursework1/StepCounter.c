@@ -82,8 +82,7 @@ int main() {
             case 'B':
             case 'b':
 
-                printf("Total records: %d\n", counter);
-                while (getchar() != '\n');
+                printf("Total records: %d\n", counter);                
                 break;
 
             case 'C':
@@ -98,8 +97,7 @@ int main() {
                     }
                 }
 
-                printf("Fewest steps: %s %s\n", data[minrecord].date, data[minrecord].time);
-                while (getchar() != '\n');
+                printf("Fewest steps: %s %s\n", data[minrecord].date, data[minrecord].time);                
                 break;
 
             case 'D':
