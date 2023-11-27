@@ -104,39 +104,39 @@ int main() {
             case 'c':
                 ;
                 int min = *data[0].steps;
-                int minrecord;
-                
-                for (int i = 0; i < counter; i++) {
-                    if (atoi(data[i].steps) < min){
+                int fewest;
+
+                for(int i = 0; i < counter; i++){
+                    if(atoi(data[i].steps) < min){
                         min = atoi(data[i].steps);
-                        minrecord = i;
+                        fewest = i;
                     }
                 }
 
-                printf("Fewest steps: %s %s\n", data[minrecord].date, data[minrecord].time); 
+                printf("Fewest steps: %s %s\n", data[fewest].date, data[fewest].time);
                 printf("Menu options:\n");
                 printf("A: Specify the filename to be imported\n");
                 printf("B: Display the total number of records in the file\n");
                 printf("C: Find the date and time of the timeslot with the fewest steps\n");
                 printf("D: Find the date and time of the timeslot with the largest number of steps\n");
                 printf("E: Find the mean step count of all the records in the file\n");
-                printf("F: Find the longest continuous period where the step count is above 500 steps\n");               
+                printf("F: Find the longest continuous period where the step count is above 500 steps\n"); 
                 break;
-
+                                
             case 'D':
             case 'd':
                 ;
                 int max = *data[0].steps;
-                int maxrecord;
+                int largest;
                 
                 for (int i = 0; i < counter; i++) {
                     if (atoi(data[i].steps) > max){
                         max = atoi(data[i].steps);
-                        maxrecord = i;
+                        largest = i;
                     }
                 }
 
-                printf("Largest steps: %s %s\n", data[maxrecord].date, data[maxrecord].time);    
+                printf("Largest steps: %s %s\n", data[largest].date, data[largest].time);    
                 printf("Menu options:\n");
                 printf("A: Specify the filename to be imported\n");
                 printf("B: Display the total number of records in the file\n");
@@ -151,7 +151,7 @@ int main() {
                 ;
                 int roundedmean;
                 float mean;
-                int total = 0;
+                float total = 0;
 
                 for (int i = 0; i < counter; i++) {
                     total += atoi(data[i].steps);                     
