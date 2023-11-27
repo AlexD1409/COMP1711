@@ -103,7 +103,7 @@ int main() {
             case 'C':
             case 'c':
                 ;
-                int min = *data[0].steps;
+                int min = atoi(data[0].steps);
                 int fewest;
 
                 for(int i = 0; i < counter; i++){
@@ -126,7 +126,7 @@ int main() {
             case 'D':
             case 'd':
                 ;
-                int max = *data[0].steps;
+                int max = atoi(data[0].steps);
                 int largest;
                 
                 for (int i = 0; i < counter; i++) {
