@@ -48,17 +48,25 @@ void swap (int *a, int *b){
     *b = temp;
 }
 
-void sort(int steps[], int records){
+void sort(SORTED steps[], SORTED date[], SORTED time[], int records){
     int i, j, minimum;
+    char tempdate[11];
+    char temptime[11];
 
     for (i=1; i<records; i++){
-        minimum = steps[i];
+        minimum = steps[i].steps;
+        strcpy(tempdate,steps[i].date);
+        strcpy(temptime,steps[i].time);
         j = i - 1;
-            while (j >= 0 && steps[j] > minimum){
-                steps[j+1] = steps[j];
+            while (j >= 0 && steps[j].steps > minimum){
+                steps[j+1].steps = steps[j].steps;
+                strcpy(steps[j+1].date,steps[j].date);
+                strcpy(steps[j+1].time,steps[j].time);
                 j=j-1;
             }
-            steps[j+1] = minimum;
+            steps[j+1].steps = minimum;
+            strcpy(steps[j+1].date,tempdate);
+            strcpy(steps[j+1].time,temptime);
     }
 }
 
@@ -82,24 +90,38 @@ int main(){
 
     while (fgets(linebuffer, buffer, input)){
         tokeniseRecord(linebuffer, "," , data[counter].date, data[counter].time, data[counter].steps);
+        int check = strlen(data[counter].date);
+        if(check != 0){
+            printf("Error\n");
+            printf("%d\n", check);
+            printf("%s\n", data[counter].date);
+            printf("%s\n", data[counter].time);
+            printf("%s\n", data[counter].steps);
+            
+            return (1);            
+        } else {
         sortdata[counter].steps = atoi(data[counter].steps);
         strcpy(sortdata[counter].date, data[counter].date);
         strcpy(sortdata[counter].time, data[counter].time);
         counter++;
         totalrecords++;
+        }
     }
 
-    int cmpfunc (const void * a, const void * b) {
-   return ( *(int*)a - *(int*)b );
-}
+    sort(sortdata, sortdata, sortdata, totalrecords); 
 
-    qsort(sortdata->steps, totalrecords, sizeof(int), cmpfunc);   
-
-    for(int i = 0; i < counter; i++){
-        printf("%d\n", sortdata[i].steps);
+    for (int i = 0; i < counter; i++){
+    printf("%s %s\n", sortdata[i].date, sortdata[i].time);  
     }
 
     FILE *output;    
+
+    for (int i = 0; i < counter; i++){
+    output = fopen("FitnessData_2023.csv.tsv", "a");
+    fprintf(output, "%s\t%s\t%d", sortdata[i].date, sortdata[i].time, sortdata[i].steps);
+    }
+
+    printf("Data sorted and written to FitnessData_2023.csv.tsv\n");
 
     return 0;
     
