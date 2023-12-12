@@ -132,6 +132,8 @@ int main(){
     FITNESS_DATA data[100];
     SORTED sortdata[100];
     char filename[100];
+    char *tempname;
+    char finalname[100];
     char linebuffer[100];
     int sortedsteps[100];
     int buffer = 100;
@@ -162,14 +164,18 @@ int main(){
 
     sort(sortdata, sortdata, sortdata, totalrecords); 
 
+    tempname = strtok(filename, ".csv");
+    strcat(tempname, ".csv.tsv");
+    strcpy(finalname, tempname);
+    
     FILE *output;    
 
     for (int i = 0; i < counter; i++){
-    output = fopen("FitnessData_2023.csv.tsv", "a");
+    output = fopen(finalname, "a");
     fprintf(output, "%s\t%s\t%d", sortdata[i].date, sortdata[i].time, sortdata[i].steps);
     }
 
-    printf("Data sorted and written to FitnessData_2023.csv.tsv\n");
+    printf("Data sorted and written to %s\n", finalname);
 
     return 0;
     
