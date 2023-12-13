@@ -3,13 +3,15 @@
 #include <string.h>
 #include <ctype.h>
 
-typedef struct {
+//Struct for reading in data
+typedef struct {                
 	char date[11];
 	char time[6];
 	char steps[5000];
 } FITNESS_DATA;
 
-typedef struct {
+//Struct for sorted data
+typedef struct {                
 	char date[11];
 	char time[6];
 	int steps;
@@ -43,6 +45,7 @@ void tokeniseRecord(const char *input, const char *delimiter,
     free(inputCopy);
 }
 
+//Function to check date format
 int isdate(char date[]) {
     if (strlen(date) != 10) {
         return 0;
@@ -82,6 +85,7 @@ int isdate(char date[]) {
 
 }
 
+//Function to check time format
 int istime(char time[]) {
     if (strlen(time) != 5) {
         return 0;
@@ -104,7 +108,7 @@ int istime(char time[]) {
     return 1;
 
 }
-
+//Sorting records
 void sort(SORTED steps[], SORTED date[], SORTED time[], int records){
     int i, j, minimum;
     char tempdate[11];
@@ -132,8 +136,6 @@ int main(){
     FITNESS_DATA data[100];
     SORTED sortdata[100];
     char filename[100];
-    char *tempname;
-    char finalname[100];
     char linebuffer[100];
     int sortedsteps[100];
     int buffer = 100;
@@ -147,6 +149,7 @@ int main(){
         return 1;
     }
 
+    //Read in data and check for correct format
     while (fgets(linebuffer, buffer, input)){
         tokeniseRecord(linebuffer, "," , data[counter].date, data[counter].time, data[counter].steps);
         int check = atoi(data[counter].steps);
@@ -162,20 +165,19 @@ int main(){
         }
     }
 
-    sort(sortdata, sortdata, sortdata, totalrecords); 
+    sort(sortdata, sortdata, sortdata, totalrecords); //Sort read in data
 
-    tempname = strtok(filename, ".csv");
-    strcat(tempname, ".csv.tsv");
-    strcpy(finalname, tempname);
-    
+    strcat(filename, ".tsv");
+        
     FILE *output;    
 
+    //Output newly sorted data to new file
     for (int i = 0; i < counter; i++){
-    output = fopen(finalname, "a");
+    output = fopen(filename, "a");
     fprintf(output, "%s\t%s\t%d", sortdata[i].date, sortdata[i].time, sortdata[i].steps);
     }
 
-    printf("Data sorted and written to %s\n", finalname);
+    printf("Data sorted and written to %s\n", filename);
 
     return 0;
     
