@@ -58,40 +58,48 @@ int getHeight(FILE *file){
 int LoadMaze(Maze *this, FILE *file, int max_width, int max_height){
     char c;
     this->Map[100][100];
-    int x = 0;
-    int y = 0;    
-    for(int x = 0; x < max_width; x++){
+       
+    for(int x = 0; x <= max_width; x++){
         for(int y = 0; y < max_height; y++){
             c = fgetc(file);
             this->Map[x][y] = c;
+            }
         }
-    }
+    
     
     return 1;
 }
 
 int main(){
-    
+
+    char test[100][100];  
     char filename[100];
     Maze Main; 
     Maze* Ptr = &Main;
-    char temp;
     printf("Enter Filename: ");
     scanf("%s", filename);
     FILE *input = fopen(filename, "r");
     int width =  getWidth(input);
     int height = getHeight(input);
-    printf("%d %d\n", width, height);
+    rewind(input);
     LoadMaze(Ptr, input, width, height);
-    printf("%c\n", Main.Map[2][3]);
+    
+    int temp;
     for(int i = 0; i < width; i++){
         for (int j = 0; j < height; j++){
-            
-            printf("%c", Main.Map[i][j]);
-        }
-
-    printf("\n");
+            temp = Main.Map[i][j];
+            printf("%c", temp);          
+        }    
     }
+
+    printf("Manual\n");
+    printf("%c", Main.Map[0][0]);
+    printf("%c", Main.Map[0][1]); 
+    printf("%c", Main.Map[0][2]); 
+    printf("%c", Main.Map[0][3]); 
+    printf("%c", Main.Map[0][4]); 
+    printf("%c", Main.Map[0][5]);     
+    printf("\n");
        
     return 0;
 }
