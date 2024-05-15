@@ -69,22 +69,83 @@ int LoadMaze(Maze *this, FILE *file, int max_width, int max_height){
     return 1;
 }
 
+//Finds start position 
+int getStart(Position *this, FILE *file, int max_width, int max_height){
+    char c;
+          
+    for(int i = 0; i <= max_width; i++){
+        for(int j = 0; j < max_height; j++){
+            c = fgetc(file);
+            if(c == 'S'){
+                this->x = i;
+                this->y = j;
+            }
+            
+            }
+        }
+    
+    
+    return 1;
+}
+
+//Finds end position 
+int getEnd(Position *this, FILE *file, int max_width, int max_height){
+    char c;
+          
+    for(int i = 0; i <= max_width; i++){
+        for(int j = 0; j < max_height; j++){
+            c = fgetc(file);
+            if(c == 'E'){
+                this->x = i;
+                this->y = j;
+            }
+            
+            }
+        }
+    
+    
+    return 1;
+}
+
+//Completion check
+int MazeCheck(Position *player, Maze *this){
+    if((this->Map[player->x][player->y] == 'E')){
+        printf("Complete!\n");
+    } else if(this->Map[player->x][player->y] != ' '){
+        printf("You've hit a wall!\n");
+    }
+
+    return 0;
+}
+
 //Prints maze
-void PrintMaze(Maze *this, int width, int height){
+void PrintMaze(Maze *this, Position *player, int width, int height){
+    printf("\n");
     for(int i = 0; i <= width; i++){
         for (int j = 0; j < height; j++){
-            
+            if(player->x == i && player->y == j){
+                printf("X");
+            } else {
             printf("%c", this->Map[i][j]);          
         }    
     }
-    printf("\n");
+    
+}
+printf("\n");
 }
 
 int main(){
     
     char filename[100];
+    char choice;
     Maze Main; 
     Maze* Ptr = &Main;
+    Position Start;
+    Position* Strt = &Start;
+    Position End;
+    Position* Finish = &End;
+    Position Player;
+    Position* Plyr = &Player;
     printf("Enter Filename: ");
     scanf("%s", filename);
     FILE *input = fopen(filename, "r");
@@ -92,7 +153,54 @@ int main(){
     int height = getHeight(input);
     rewind(input);
     LoadMaze(Ptr, input, width, height);
-    PrintMaze(Ptr, width, height);
+    rewind(input);
+    getStart(Strt, input, width, height);
+    Player.x = Start.x;
+    Player.y = Start.y;
+    printf("%d %d\n", Player.x, Player.y);
+    rewind(input);
+    getEnd(Finish, input, width, height);
+    printf("%d, %d\n", End.x, End.y);
+    
+    
+    while(1){
+        choice = getchar();
+        switch (choice){
+            case 'W':
+            case 'w':
+                Player.x--;
+                MazeCheck(Plyr, Ptr);
+                
+                break;
+
+            case 'A':
+            case 'a':
+                Player.y--;
+                MazeCheck(Plyr, Ptr);
+                
+                break;
+
+            case 'S':
+            case 's':
+                Player.x++;
+                MazeCheck(Plyr, Ptr);
+                
+                break;
+
+            case 'D':
+            case 'd':
+                Player.y++;
+                MazeCheck(Plyr, Ptr);
+                
+                break;
+
+            case 'M':
+            case 'm':
+                rewind(input);
+                PrintMaze(Ptr, Plyr, width, height);
+                break;
+        }
+    }
     
     return 0;
 }

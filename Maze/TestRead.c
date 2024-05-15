@@ -54,7 +54,7 @@ int getHeight(FILE *file){
 int LoadMaze(Maze *this, FILE *file, int max_width, int max_height){
     char c;
     this->Map[100][100];
-       
+    //Copying character 1 by 1 into 2d array Map   
     for(int x = 0; x <= max_width; x++){
         for(int y = 0; y < max_height; y++){
             c = fgetc(file);
@@ -69,31 +69,156 @@ int LoadMaze(Maze *this, FILE *file, int max_width, int max_height){
     return 1;
 }
 
-int main(){
+//Finds start position 
+int getStart(Position *this, FILE *file, int max_width, int max_height){
+    char c;
+          
+    for(int i = 0; i <= max_width; i++){
+        for(int j = 0; j < max_height; j++){
+            c = fgetc(file);
+            if(c == 'S'){
+                this->x = i;
+                this->y = j;
+            }
+            
+            }
+        }
+    
+    
+    return 1;
+}
 
-    char test[100][100];  
+//Finds end position 
+int getEnd(Position *this, FILE *file, int max_width, int max_height){
+    char c;
+          
+    for(int i = 0; i <= max_width; i++){
+        for(int j = 0; j < max_height; j++){
+            c = fgetc(file);
+            if(c == 'E'){
+                this->x = i;
+                this->y = j;
+            }
+            
+            }
+        }
+    
+    
+    return 1;
+}
+
+//Completion check
+int MazeComplete(Position *player, Maze *this){
+    if((this->Map[player.x][player->y] == 'E')){
+        printf("Complete!\n");
+    }
+
+    return 0;
+}
+
+//Prints maze
+void PrintMaze(Maze *this, Position *player, int width, int height){
+    for(int i = 0; i <= width; i++){
+        for (int j = 0; j < height; j++){
+            if(player->x == i && player->y == j){
+                printf("X");
+            } else {
+            printf("%c", this->Map[i][j]);          
+        }    
+    }
+    
+}
+printf("\n");
+}
+
+int main(){
+    
     char filename[100];
+    char choice;
     Maze Main; 
     Maze* Ptr = &Main;
+    Position Start;
+    Position* Strt = &Start;
+    Position End;
+    Position* Finish = &End;
+    Position Player;
+    Position* Plyr = &Player;
     printf("Enter Filename: ");
     scanf("%s", filename);
     FILE *input = fopen(filename, "r");
     int width =  getWidth(input);
     int height = getHeight(input);
-    printf("Height is %d\n", height);
-    printf("Width is %d\n", width);
     rewind(input);
     LoadMaze(Ptr, input, width, height);
+    rewind(input);
+    getStart(Strt, input, width, height);
+    Player.x = Start.x;
+    Player.y = Start.y;
+    printf("%d %d\n", Player.x, Player.y);
+    rewind(input);
+    getEnd(Finish, input, width, height);
+    printf("%d, %d\n", End.x, End.y);
     
-    int temp;
-    for(int i = 0; i <= width; i++){
-        for (int j = 0; j < height; j++){
-            
-            printf("%c", Main.Map[i][j]);          
-        }    
+    
+    while(1){
+        choice = getchar();
+        switch (choice){
+            case 'W':
+            case 'w':
+                Player.x--;
+                if(Main.Map[Player.y][Player.x]== 'E'){
+                    printf("You've completed the maze!\n");
+                    
+                } else if(Main.Map[Player.x][Player.y] != ' '){
+                    printf("You've hit a wall\n");
+                    Player.x++;
+                }
+                break;
+
+            case 'A':
+            case 'a':
+                Player.y--;
+                if(Main.Map[Player.y][Player.x] == 'E'){
+                    printf("You've completed the maze!\n");
+                    
+                } else if(Main.Map[Player.y][Player.x] != ' '){
+                    printf("You've hit a wall\n");
+                    Player.y++;
+                }
+                break;
+
+            case 'S':
+            case 's':
+                Player.x++;
+                if(Main.Map[Player.y][Player.x] == 'E'){
+                    printf("You've completed the maze!\n");
+                    
+                } else if(Main.Map[Player.x][Player.y] != ' '){
+                    printf("You've hit a wall\n");
+                    Player.x--;
+                }
+                break;
+
+            case 'D':
+            case 'd':
+                Player.y++;
+                if(Main.Map[Player.y][Player.x] == 'E'){
+                    printf("You've completed the maze!\n");
+                    return 0;
+                    
+                } else if(Main.Map[Player.x][Player.y] != ' '){
+                    printf("You've hit a wall\n");
+                    Player.y--;
+                }
+                break;
+
+            case 'M':
+            case 'm':
+                rewind(input);
+                PrintMaze(Ptr, Plyr, width, height);
+                break;
+        }
     }
-    printf("\n");
-    printf("Test\n");
     
     return 0;
 }
