@@ -39,36 +39,45 @@ int getHeight(FILE *file){
     
     int height = 1;
     int max_height = 0;
-    while(fgetc(file)){
-        if(feof(file)){
-            break;
-        } else if(fgetc(file) == '\n'){
+    char row[100];
+    while(fgets(row, 100, file)){        
             height++;
-            if(height >= max_height){
-            max_height = height;
-        }
-        
-        } 
-    
-    }
+            if(max_height < height){
+                max_height = height;
+            }
+            
+    }    
     return max_height;
 }
 
 //Loads Maze into struct
-int LoadMaze(Maze *this, FILE *file){
+int LoadMaze(Maze *this, FILE *file, int max_width, int max_height){
     char c;
-    int x = 0;
-    int y = 0;
     this->Map[100][100];
-    while (fgetc(file)){
-        c = fgetc(file);
-        this->Map[x][y] = c;
-        x++;
-        if(c == '\n'){
-            y++;
-            x = 0;
+    //Copying character 1 by 1 into 2d array Map   
+    for(int x = 0; x <= max_width; x++){
+        for(int y = 0; y < max_height; y++){
+            c = fgetc(file);
+            if(c == EOF){
+                break;
+            }
+            this->Map[x][y] = c;
+            }
         }
+    
+    
+    return 1;
+}
+
+//Prints maze
+void PrintMaze(Maze *this, int width, int height){
+    for(int i = 0; i <= width; i++){
+        for (int j = 0; j < height; j++){
+            
+            printf("%c", this->Map[i][j]);          
+        }    
     }
+    printf("\n");
 }
 
 int main(){
@@ -76,20 +85,14 @@ int main(){
     char filename[100];
     Maze Main; 
     Maze* Ptr = &Main;
-    char temp;
     printf("Enter Filename: ");
     scanf("%s", filename);
     FILE *input = fopen(filename, "r");
     int width =  getWidth(input);
     int height = getHeight(input);
-    LoadMaze(Ptr, input);
-    printf("%d %d\n", width, height);
-    for(int i = 0; i < width; i++){
-        for (int j = 0; j < height; j++){
-            
-            printf("%c", Main.Map[i][j]);
-        }
-    }
-       
+    rewind(input);
+    LoadMaze(Ptr, input, width, height);
+    PrintMaze(Ptr, width, height);
+    
     return 0;
 }

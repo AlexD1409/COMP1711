@@ -9,71 +9,91 @@
 typedef struct Position{
     int x;
     int y;
-}Position, PlayerPos;
+}Position;
 
 typedef struct MazeData{
     int height;
     int width;
     Position start;
     Position end; 
-    char **map;
+    char Map[100][100];
 }Maze;
 
+//Finds Maze Width
+int getWidth(FILE *file){
+    
+    int width = 0;
+    int max_width = 0;
+    while(fgetc(file) != '\n'){
+        width++;
+        if(width >= max_width){
+            max_width = width;
+        } 
+    
+    }
+    return max_width;
+}
+
+//Finds Maze Height
+int getHeight(FILE *file){
+    
+    int height = 1;
+    int max_height = 0;
+    char row[100];
+    while(fgets(row, 100, file)){        
+            height++;
+            if(max_height < height){
+                max_height = height;
+            }
+            
+    }    
+    return max_height;
+}
+
+//Loads Maze into struct
+int LoadMaze(Maze *this, FILE *file, int max_width, int max_height){
+    char c;
+    this->Map[100][100];
+       
+    for(int x = 0; x <= max_width; x++){
+        for(int y = 0; y < max_height; y++){
+            c = fgetc(file);
+            if(c == EOF){
+                break;
+            }
+            this->Map[x][y] = c;
+            }
+        }
+    
+    
+    return 1;
+}
 
 int main(){
+
+    char test[100][100];  
     char filename[100];
-    char linebuffer[100];
-    char Maze[100][100];
-    char temp;
-    int x = 0;
-    int y = 0;
-    int x_max = 0;
-    int y_max = 0;
+    Maze Main; 
+    Maze* Ptr = &Main;
     printf("Enter Filename: ");
     scanf("%s", filename);
     FILE *input = fopen(filename, "r");
-    if (!input) {
-        printf("Error: invalid file\n");
-        return 1;
-    }
+    int width =  getWidth(input);
+    int height = getHeight(input);
+    printf("Height is %d\n", height);
+    printf("Width is %d\n", width);
+    rewind(input);
+    LoadMaze(Ptr, input, width, height);
     
-    //Read maze into array
-    while(fgetc(input)){
-        temp = fgetc(input);
-       if(temp == ('#' || ' ' || 'S' || 'E' || '\n')){
-        if(temp != '\n'){
-            Maze[x][y] = temp;
-            x = x + 1;
-            if(x_max <= x){
-                x_max = x;
-            }
-        } else{
-            Maze[x][y] = temp;
-            y = y + 1;
-            x = 0;
-            if(y_max <= y){
-                x_max = y;
-            }
-        }
-       } else{
-        printf("Invalid file entered\n");
-        return 0;
-       }
+    int temp;
+    for(int i = 0; i <= width; i++){
+        for (int j = 0; j < height; j++){
+            
+            printf("%c", Main.Map[i][j]);          
+        }    
     }
-
-    //Print maze
-    int i = 0;
-    int n = 0;
-    for (i = 0; n < y_max; i++){
-        printf("%c", Maze[i][n]);
-        n++;
-        if(Maze[i][n] == '\n'){
-            n = 0;
-            i++;
-        }
-
-    }
-
-return 0;
+    printf("\n");
+    printf("Test\n");
+    
+    return 0;
 }
-
